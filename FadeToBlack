@@ -1,0 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class FadeToBlack : MonoBehaviour
+{
+    public float fadeDuration = 2.0f; // 渐变持续时间
+    public bool fadeInOnStart = false; // 是否在开始时进行渐变
+
+    private Image image; // Image 组件
+    private float fadeTimer = 0.0f; // 渐变计时器
+    private float startAlpha = 0.0f; // 起始透明度
+    private float targetAlpha = 0.0f; // 目标透明度
+
+    void Start()
+    {
+        image = GetComponent<Image>(); // 获取 Image 组件
+
+        if (fadeInOnStart)
+        {
+            FadeIn();
+        }
+        
+    }
+
+
+    void Update()
+    {
+        if (fadeTimer < fadeDuration)
+        {
+            // 计算当前透明度
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, fadeTimer / fadeDuration);
+
+            // 更新 Image 组件的透明度
+            Color color = image.color;
+            color.a = alpha;
+            image.color = color;
+
+            // 更新计时器
+            fadeTimer += Time.deltaTime;
+        }
+    }
+
+    // 渐变到指定透明度
+    public void FadeTo(float alpha, float duration)
+    {
+        startAlpha = image.color.a;
+        targetAlpha = alpha;
+        fadeDuration = duration;
+        fadeTimer = 0.0f;
+    }
+
+    // 渐变到完全透明
+    public void FadeOut()
+    {
+        FadeTo(0.0f, fadeDuration);
+    }
+
+    // 渐变到完全不透明
+    public void FadeIn()
+    {
+        FadeTo(1.0f, fadeDuration);
+    }
+}
