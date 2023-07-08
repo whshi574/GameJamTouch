@@ -1,5 +1,3 @@
-#CameraShake.cs
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +5,10 @@ using UnityEngine;
     public class CameraShake : MonoBehaviour
     {
         // 震屏的持续时间
-        public float shakeDuration = 0.5f;
+        public float shakeDuration = 0.8f;
 
         // 震屏的强度
-        public float shakeIntensity = 0.1f;
+        public float shakeIntensity = 0.5f;
 
         // 震屏的频率
         public float shakeFrequency = 25f;
