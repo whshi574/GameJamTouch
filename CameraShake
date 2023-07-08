@@ -1,0 +1,61 @@
+#CameraShake.cs
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+    public class CameraShake : MonoBehaviour
+    {
+        // 震屏的持续时间
+        public float shakeDuration = 0.5f;
+
+        // 震屏的强度
+        public float shakeIntensity = 0.1f;
+
+        // 震屏的频率
+        public float shakeFrequency = 25f;
+
+        // 是否启用震屏
+        private bool isShaking = false;
+
+        // 震屏的起始时间
+        private float shakeStartTime = 0f;
+
+        // 震屏的起始位置
+        private Vector3 shakeStartPosition;
+        
+        void Start()
+        {
+        Shake();
+        }
+        void Update()
+        {
+            if (isShaking)
+            {
+                // 计算震屏的偏移量
+                float shakeTime = Time.time - shakeStartTime;
+                float x = Mathf.PerlinNoise(shakeTime * shakeFrequency, 0f) * 2f - 1f;
+                float y = Mathf.PerlinNoise(0f, shakeTime * shakeFrequency) * 2f - 1f;
+                Vector3 shakeOffset = new Vector3(x, y, 0) * shakeIntensity;
+
+                // 更新相机的位置
+                transform.position = shakeStartPosition + shakeOffset;
+
+                // 判断震屏是否结束
+                if (shakeTime >= shakeDuration)
+                {
+                    isShaking = false;
+                    transform.position = shakeStartPosition;
+                }
+            }
+        }
+
+        // 开始震屏
+        public void Shake()
+        {
+            isShaking = true;
+            shakeStartTime = Time.time;
+            shakeStartPosition = transform.position;
+        }
+    }
+
